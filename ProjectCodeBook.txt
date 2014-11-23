@@ -1,0 +1,154 @@
+CodeBook.txt
+
+This codebook describes the variables used from the UCI HAR Data and how they are organized in the TidyDataResult.txt file produced by the run_analysis.R script.  The resulting data set is tall and narrow.
+
+Note that the assumption is that the UCI HAR Data is in your working directory, and the run_analysis.R script is also in that directory.
+
+Variables in the R script:
+varNames: a collection of the names taken from ./UCI HAR Dataset/features.txt (factors)
+
+DATA FROM THE TRAIN DIRECTORY
+trainSubject: a vector of subject numbers taken from ./UCI HAR Dataset/train/subject_train.txt
+trainX: a data frame of the measured variables (names in varNames) taken from ./UCI HAR Dataset/train/X_train.txt
+trainY: a data frame of the activities performed by each subject taken from ./UCI HAR Dataset/train/y_train.txt
+trainYF: is a vector of factors with the numbers of activity replaced by their descriptive variable names (these are the same names found in ./UCI HAR Dataset/activity_labels.txt
+
+DATA FROM THE TEST DIRECTORY
+testSubject: a vector of subject numbers taken from ./UCI HAR Dataset/test/subject_test.txt
+testX: a data frame of the measured variables (names in varNames) taken from ./UCI HAR Dataset/test/X_test.txt
+testY: a data frame of the activities performed by each subject taken from ./UCI HAR Dataset/test/y_test.txt
+testYF: is a vector of factors with the numbers of activity replaced by their descriptive variable names (these are the same names found in ./UCI HAR Dataset/activity_labels.txt
+
+FIRST UNTIDY DATA SET (result is very tall and narrow, because there are many more rows than columns)
+Part 1 comes from column binding the training sets together in left-to-right order:
+trainSubject trainYF trainX (subject, activity, measurements)
+
+Part 2 comes from column binding the test sets together in left-to-right order:
+testSubject testYF testX (subject, activity, measurements)
+
+These two parts are combined by row binding the two previous sets, stacking the training set above the test set
+in untidyData1
+
+SECOND UNTIDY DATA SET
+The second untidy data set comes from selecting only the columns of the untidyData1 that correspond to means and standard deviation variables.  These are chosen by selecting column names that contain either of those terms
+The result is stored in untidyData2
+** The variables included are a subset of those in ./UCI HAR Dataset/features.txt and are listed below the 
+rest of the material in this codebook.
+
+TIDY DATA SET
+The second untidy data set contains multiple observations per subject per activity.  Using the data.table package in R, these multiple results are combined into the average of all observations per subject per activity resulting in a data table that has only six rows per subject, each row containing observations for each subject for one activity
+The result is stored in tidyTable
+
+TEXT FILE TABLE OUTPUT
+The write.table function (row.name = FALSE) is applied to tidyTable and writes the tidy table to TidyDataResult.txt which is saved in the working directory.
+
+#########################################################
+VARIABLE MEASUREMENTS INCLUDED IN THE FINAL OUTPUT (note: means taken for each one as discussed in the TIDY DATA SET section above)  These correspond to columns (after subject and activity) in the final table.  The numbers below refer to the original list (in the features.txt file) but not the number of appearance in the output as column headers.
+
+1 tBodyAcc-mean()-X
+2 tBodyAcc-mean()-Y
+3 tBodyAcc-mean()-Z
+4 tBodyAcc-std()-X
+5 tBodyAcc-std()-Y
+6 tBodyAcc-std()-Z
+
+41 tGravityAcc-mean()-X
+42 tGravityAcc-mean()-Y
+43 tGravityAcc-mean()-Z
+44 tGravityAcc-std()-X
+45 tGravityAcc-std()-Y
+46 tGravityAcc-std()-Z
+
+81 tBodyAccJerk-mean()-X
+82 tBodyAccJerk-mean()-Y
+83 tBodyAccJerk-mean()-Z
+84 tBodyAccJerk-std()-X
+85 tBodyAccJerk-std()-Y
+86 tBodyAccJerk-std()-Z
+
+121 tBodyGyro-mean()-X
+122 tBodyGyro-mean()-Y
+123 tBodyGyro-mean()-Z
+124 tBodyGyro-std()-X
+125 tBodyGyro-std()-Y
+126 tBodyGyro-std()-Z
+
+161 tBodyGyroJerk-mean()-X
+162 tBodyGyroJerk-mean()-Y
+163 tBodyGyroJerk-mean()-Z
+164 tBodyGyroJerk-std()-X
+165 tBodyGyroJerk-std()-Y
+166 tBodyGyroJerk-std()-Z
+
+201 tBodyAccMag-mean()
+202 tBodyAccMag-std()
+
+214 tGravityAccMag-mean()
+215 tGravityAccMag-std()
+216 tGravityAccMag-mad()
+217 tGravityAccMag-max()
+
+227 tBodyAccJerkMag-mean()
+228 tBodyAccJerkMag-std()
+
+240 tBodyGyroMag-mean()
+241 tBodyGyroMag-std()
+
+253 tBodyGyroJerkMag-mean()
+254 tBodyGyroJerkMag-std()
+
+266 fBodyAcc-mean()-X
+267 fBodyAcc-mean()-Y
+268 fBodyAcc-mean()-Z
+269 fBodyAcc-std()-X
+270 fBodyAcc-std()-Y
+271 fBodyAcc-std()-Z
+
+294 fBodyAcc-meanFreq()-X
+295 fBodyAcc-meanFreq()-Y
+296 fBodyAcc-meanFreq()-Z
+
+345 fBodyAccJerk-mean()-X
+346 fBodyAccJerk-mean()-Y
+347 fBodyAccJerk-mean()-Z
+348 fBodyAccJerk-std()-X
+349 fBodyAccJerk-std()-Y
+350 fBodyAccJerk-std()-Z
+
+373 fBodyAccJerk-meanFreq()-X
+374 fBodyAccJerk-meanFreq()-Y
+375 fBodyAccJerk-meanFreq()-Z
+
+424 fBodyGyro-mean()-X
+425 fBodyGyro-mean()-Y
+426 fBodyGyro-mean()-Z
+427 fBodyGyro-std()-X
+428 fBodyGyro-std()-Y
+429 fBodyGyro-std()-Z
+
+452 fBodyGyro-meanFreq()-X
+453 fBodyGyro-meanFreq()-Y
+454 fBodyGyro-meanFreq()-Z
+503 fBodyAccMag-mean()
+504 fBodyAccMag-std()
+
+516 fBodyBodyAccJerkMag-mean()
+517 fBodyBodyAccJerkMag-std()
+
+526 fBodyBodyAccJerkMag-meanFreq()
+
+529 fBodyBodyGyroMag-mean()
+530 fBodyBodyGyroMag-std()
+
+542 fBodyBodyGyroJerkMag-mean()
+543 fBodyBodyGyroJerkMag-std()
+
+552 fBodyBodyGyroJerkMag-meanFreq()
+
+556 angle(tBodyAccJerkMean),gravityMean)
+557 angle(tBodyGyroMean,gravityMean)
+558 angle(tBodyGyroJerkMean,gravityMean)
+559 angle(X,gravityMean)
+560 angle(Y,gravityMean)
+561 angle(Z,gravityMean)
+
